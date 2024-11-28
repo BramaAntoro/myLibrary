@@ -31,6 +31,7 @@ include('templates/header.php');
                         <th>Title</th>
                         <th>Author</th>
                         <th>Years</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,6 +41,9 @@ include('templates/header.php');
                             <td><?= $book->getTitle() ?></td>
                             <td><?= $book->getAuthor() ?></td>
                             <td><?= $book->getYear() ?></td>
+                            <td>
+                                <a class="btn btn-primary" href="/book">Pinjam</a>
+                            </td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

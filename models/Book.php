@@ -24,9 +24,13 @@ class Book
     static function filter($search)
     {
         global $pdo;
-        $query = $pdo->query("SELECT * FROM books WHERE title LIKE '%$search%'");
-        return $query->fetchAll(PDO::FETCH_CLASS, 'Book');
+        $search = "%$search%";
+        $stmt = $pdo->prepare("SELECT * FROM books WHERE title LIKE :search");
+        $stmt->bindParam(':search', $search);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_CLASS, 'Book');
     }
+
 
     static function get()
     {

@@ -4,7 +4,7 @@ require_once 'config/database.php';
 
 class User
 {
-    private $id, $name, $username, $password, $role_id;
+    public $id, $name, $username, $password, $role_id;
 
     // public function __construct($name, $username, $password, $role_id)
     // {
@@ -20,40 +20,54 @@ class User
         try {
             global $pdo;
 
-            $select = "SELECT * FROM users WHERE username='" . $username . "'";
-            $query = $pdo->query($select);
-            $user = $query->fetchAll(PDO::FETCH_CLASS, 'User');
+            $select = "SELECT * FROM users WHERE username=:username";
+            $query = $pdo->prepare($select);
+            $query->bindParam(':username', $username);
+            $query->execute();
+            $user = $query->fetch(PDO::FETCH_OBJ);
 
-            if (count($user) == 0) {
-                $_SESSION['error'] = "user has not registed!";
+            if (!$user) {
+                $_SESSION['error'] = "User not registered!";
                 header('location: /login');
-                die;
+                exit;
             }
 
-            if (password_verify($password, $user[0]->password)) {
+            if (password_verify($password, $user->password)) {
                 $_SESSION['is_login'] = true;
-                $_SESSION['username'] = $this->username;
-                header("location: /membership");
-                die();
+                $_SESSION['username'] = $user->username;
+                $_SESSION['role_id'] = $user->role_id;
+
+                if ($user->role_id == 1) {
+                    header("location: /membership");
+                } elseif ($user->role_id == 2) {
+                    header("location: /visitor");
+                }
+                exit;
             }
 
-            $_SESSION['error'] = "wrong password!";
+            $_SESSION['error'] = "Wrong password!";
             header('location: /login');
         } catch (PDOException $e) {
-            echo $user . "<br>" . $e->getMessage();
+            echo "Error: " . $e->getMessage();
         }
     }
+
 
     public function register()
     {
         try {
             global $pdo;
-            $user = "INSERT INTO users (name, username, password, role_id) VALUES ('$this->name', '$this->username', '$this->password', $this->role_id)";
-            $pdo->exec($user);
-            $_SESSION['success'] = "Register Success!";
-            header('location: /register');
+
+            // Menambahkan user dengan role_id = 2 (member)
+            $user = "INSERT INTO users (name, username, password, role_id) VALUES ('$this->name', '$this->username', '$this->password', 2)";
+            $pdo->exec($user);  // Eksekusi query untuk memasukkan data
+
+            $_SESSION['success'] = "Registration successful!";
+            header('location: /membership');  // Kembali ke halaman membership setelah registrasi
         } catch (PDOException $e) {
             echo $user . "<br>" . $e->getMessage();
         }
     }
+
+
 }

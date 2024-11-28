@@ -2,6 +2,9 @@
 if (!defined('SECURE_ACCESS')) {
     die('Direct access not permitted');
 }
+
+
+
 include('templates/header.php') ?>
 
 <div class="main-content login-panel">
