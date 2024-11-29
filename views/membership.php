@@ -41,8 +41,8 @@ include('templates/header.php');
                         <td>{$member->username}</td>
                         <td>Member</td>
                         <td>
-                            <a href='/book' class='btn btn-primary'>Pinjam</a> 
-                            <a href='/book' class='btn btn-danger'>Delete</a> 
+                            <a href='/book' class='btn btn-primary'>Borrow</a> 
+                            <a href='/membership?delete={$member->id}' class='btn btn-danger'>Delete</a> 
                         </td>
                     </tr>";
                 $number++;

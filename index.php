@@ -5,6 +5,9 @@ define('SECURE_ACCESS', true);
 $uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'] ?? NULL;
 
+// Koneksi Database
+require_once 'config/database.php'; 
+
 // Redirect ke halaman login jika belum login
 if (!isset($_SESSION['is_login']) && ($uri == '/membership' || $uri == '/book')) {
     header('location: /login');
@@ -27,6 +30,32 @@ if ($uri == '/membership') {
         exit;
     }
     return require 'controllers/MembershipController.php';
+}
+
+if (strpos($uri, '/membership?delete=') !== false) {
+    // Validasi akses role_id
+    if ($_SESSION['role_id'] != 1) {
+        header('location: /login');
+        exit;
+    }
+    $id = explode('=', $query_string)[1];
+
+    // Hapus data member
+    try {
+        $sql = "DELETE FROM users WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        // Set session success message
+        $_SESSION['success'] = "Member berhasil dihapus!";
+
+        // Redirect kembali ke halaman membership
+        header('location: /membership');
+        exit;
+    } catch (PDOException $e) {
+        echo "Error deleting member: " . $e->getMessage();
+    }
 }
 
 

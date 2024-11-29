@@ -7,6 +7,11 @@ if (isset($_SESSION['is_login']) == false) {
     header("location: /login");
 }
 
+if (isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success text-center">'.$_SESSION['success'].'</div>';
+    unset($_SESSION['success']); // Hapus pesan sesi setelah ditampilkan
+}
+
 include('templates/header.php');
 ?>
 

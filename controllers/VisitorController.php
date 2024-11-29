@@ -1,6 +1,6 @@
 <?php
 
-require 'Controller.php';
+require_once 'Controller.php';
 
 class VisitorController extends Controller
 {

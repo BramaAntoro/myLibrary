@@ -1,10 +1,10 @@
-    <?php
+<?php
 
-    class Controller
+class Controller
+{
+    protected static function view($page, $data = [])
     {
-        protected static function view($page, $data = [])
-        {
-            $data;
-            require $page;
-        }
+        $data;
+        require $page;
     }
+}
