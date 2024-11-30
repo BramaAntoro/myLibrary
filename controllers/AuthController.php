@@ -18,7 +18,7 @@ class AuthController extends Controller
             }
 
             $user = new User;
-            $user->auth($username, $password); // Authentikasi termasuk validasi role
+            $user->auth($username, $password);
             exit;
         }
         return self::view("views/login.php");
@@ -26,7 +26,6 @@ class AuthController extends Controller
 
     public static function register()
     {
-        // Pastikan session username dan name kosong saat masuk halaman register
         unset($_SESSION['username']);
         unset($_SESSION['name']);
 
