@@ -5,10 +5,8 @@ define('SECURE_ACCESS', true);
 $uri = $_SERVER['REQUEST_URI'];
 $query_string = $_SERVER['QUERY_STRING'] ?? NULL;
 
-// Koneksi Database
-require_once 'config/database.php'; 
+require_once 'config/database.php';
 
-// Redirect ke halaman login jika belum login
 if (!isset($_SESSION['is_login']) && ($uri == '/membership' || $uri == '/book')) {
     header('location: /login');
     exit;
@@ -23,8 +21,12 @@ if ($uri == '/') {
 //     return require 'controllers/VisitorController.php';
 // }
 
+if ($uri == '/borrow' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'controllers/BorrowController.php';
+    return BorrowController::store();
+}
+
 if ($uri == '/membership') {
-    // Validasi akses role_id
     if ($_SESSION['role_id'] != 1) {
         header('location: /login');
         exit;
@@ -33,24 +35,20 @@ if ($uri == '/membership') {
 }
 
 if (strpos($uri, '/membership?delete=') !== false) {
-    // Validasi akses role_id
     if ($_SESSION['role_id'] != 1) {
         header('location: /login');
         exit;
     }
     $id = explode('=', $query_string)[1];
 
-    // Hapus data member
     try {
         $sql = "DELETE FROM users WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
-        
-        // Set session success message
+
         $_SESSION['success'] = "Member berhasil dihapus!";
 
-        // Redirect kembali ke halaman membership
         header('location: /membership');
         exit;
     } catch (PDOException $e) {
@@ -60,7 +58,6 @@ if (strpos($uri, '/membership?delete=') !== false) {
 
 
 if ($uri == '/add-book') {
-    // Validasi akses role_id
     if ($_SESSION['role_id'] != 1) {
         header('location: /login');
         exit;
@@ -74,7 +71,6 @@ if ($uri == '/add-book' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if ($uri == '/visitor') {
-    // Validasi akses role_id
     if ($_SESSION['role_id'] != 2) {
         header('location: /login');
         exit;
@@ -90,7 +86,6 @@ if ($uri == '/login' || $uri == '/register') {
     return require 'controllers/AuthController.php';
 }
 
-// Redirect ke halaman login jika belum login
 if (!isset($_SESSION['is_login']) && ($uri == '/membership' || $uri == '/book')) {
     header('location: /login');
     exit;
@@ -99,9 +94,9 @@ if (!isset($_SESSION['is_login']) && ($uri == '/membership' || $uri == '/book'))
 
 if ($uri == '/logout') {
     session_start();
-    session_unset(); 
-    session_destroy(); 
-    header('location: /'); 
+    session_unset();
+    session_destroy();
+    header('location: /');
     exit;
 }
 

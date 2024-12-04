@@ -53,19 +53,15 @@ include('templates/header.php') ?>
                         value="<?= isset($_SESSION['password']) ? $_SESSION['password'] : '' ?>">
                     <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                 </div>
-                <button class="btn btn-primary w-100 login-btn" type="submit">Sign in</button>
-                <div class="mt-3">Have not you an accout?
-                    <a href="/register">Click here</a>
-                </div>
+                <button class="btn btn-primary w-100 login-btn" type="submit">Login</button>
             </form>
         </div>
     </div>
 
-    <!-- footer start -->
     <div class="footer">
         <p>Copyright© <script>
                 document.write(new Date().getFullYear())
-            </script> All Rights Reserved By <span class="text-primary">Digiboard</span></p>
+            </script> All Rights Reserved By <span class="text-primary">BRAMA</span></p>
     </div>
     <!-- footer end -->
 </div>

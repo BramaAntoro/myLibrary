@@ -11,14 +11,33 @@ class AuthController extends Controller
             $password = $_POST['password'];
 
             if (empty($username) || empty($password)) {
-                $_SESSION['error'] = "All fields must be filled!";
-                $_SESSION['username'] = $username;
+                $_SESSION['error'] = "Username dan password harus diisi!";
                 header('location: /login');
                 exit;
             }
 
-            $user = new User;
-            $user->auth($username, $password);
+            global $pdo;
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
+            $stmt->bindParam(':username', $username);
+            $stmt->execute();
+            $user = $stmt->fetch();
+
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['is_login'] = true;
+                $_SESSION['role_id'] = $user['role_id'];
+                
+                $_SESSION['user_id'] = $user['id'];
+
+                if ($user['role_id'] == 1) {
+                    header('location: /membership');
+                } else {
+                    header('location: /visitor');
+                }
+                exit;
+            }
+
+            $_SESSION['error'] = "Username atau password salah!";
+            header('location: /login');
             exit;
         }
         return self::view("views/login.php");
@@ -34,7 +53,6 @@ class AuthController extends Controller
             $username = htmlspecialchars($_POST['username']);
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-            // Validasi input
             if (empty($name) || empty($username) || empty($password)) {
                 $_SESSION['error'] = "All fields must be filled!";
                 $_SESSION['name'] = $name;
@@ -48,7 +66,6 @@ class AuthController extends Controller
             $user->username = $username;
             $user->password = $password;
 
-            // Proses registrasi
             $user->register();
             exit;
         }

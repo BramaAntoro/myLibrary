@@ -58,12 +58,11 @@ class User
         try {
             global $pdo;
 
-            // Menambahkan user dengan role_id = 2 (member)
             $user = "INSERT INTO users (name, username, password, role_id) VALUES ('$this->name', '$this->username', '$this->password', 2)";
-            $pdo->exec($user);  // Eksekusi query untuk memasukkan data
+            $pdo->exec($user);  
 
             $_SESSION['success'] = "Registration successful!";
-            header('location: /membership');  // Kembali ke halaman membership setelah registrasi
+            header('location: /membership');  
         } catch (PDOException $e) {
             echo $user . "<br>" . $e->getMessage();
         }

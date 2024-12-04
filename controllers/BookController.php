@@ -24,14 +24,12 @@ class BookController extends Controller
             $author = htmlspecialchars($_POST['author']);
             $year = (int) htmlspecialchars($_POST['year']);
 
-            // Validasi input
             if (empty($title) || empty($author) || empty($year)) {
                 $_SESSION['error'] = "All fields must be filled!";
                 header('location: /add-book');
                 exit;
             }
 
-            // Simpan ke database
             global $pdo;
             $stmt = $pdo->prepare("INSERT INTO books (title, author, year) VALUES (:title, :author, :year)");
             $stmt->bindParam(':title', $title);
@@ -43,8 +41,6 @@ class BookController extends Controller
             } else {
                 $_SESSION['error'] = "Failed to add book!";
             }
-
-            // Redirect ke /book setelah berhasil menambahkan
             header('location: /book');
             exit;
         }

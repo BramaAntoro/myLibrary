@@ -8,6 +8,12 @@ if (isset($_SESSION['is_login']) == false) {
     header("location: /login");
 }
 
+if ($_SESSION['role_id'] != 1) {
+    echo "Tidak memiliki akses";
+    exit;
+}
+
+
 include('config/database.php');
 
 include('templates/header.php');
@@ -15,6 +21,7 @@ include('templates/header.php');
 
 <div class="container">
     <a href="/register" class="btn btn-primary mb-3">Register Member</a>
+    <a href='/book' class='btn btn-primary mb-3'>Borrow</a> 
     <a href="/logout" class="btn btn-danger mb-3">Logout</a>
     <table class="table">
         <thead>
@@ -28,7 +35,6 @@ include('templates/header.php');
         </thead>
         <tbody>
             <?php
-            // Query untuk mengambil daftar member dari database
             $query = $pdo->query("SELECT * FROM users WHERE role_id = 2");
             $members = $query->fetchAll(PDO::FETCH_OBJ);
             $totalMembers = count($members);
@@ -41,7 +47,6 @@ include('templates/header.php');
                         <td>{$member->username}</td>
                         <td>Member</td>
                         <td>
-                            <a href='/book' class='btn btn-primary'>Borrow</a> 
                             <a href='/membership?delete={$member->id}' class='btn btn-danger'>Delete</a> 
                         </td>
                     </tr>";

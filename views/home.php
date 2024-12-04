@@ -34,7 +34,7 @@ include('templates/header.php') ?>
     <div class="footer">
         <p>Copyright© <script>
                 document.write(new Date().getFullYear())
-            </script> All Rights Reserved By <span class="text-primary">PI SCHOOL LIBRARY</span></p>
+            </script> All Rights Reserved By <span class="text-primary">BRAMA</span></p>
     </div>
 </div>
 

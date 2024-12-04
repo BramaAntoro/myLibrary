@@ -7,9 +7,14 @@ if (isset($_SESSION['is_login']) == false) {
     header("location: /login");
 }
 
+if ($_SESSION['role_id'] != 1) {
+    echo "Tidak memiliki akses";
+    exit;
+}
+
 if (isset($_SESSION['success'])) {
     echo '<div class="alert alert-success text-center">'.$_SESSION['success'].'</div>';
-    unset($_SESSION['success']); // Hapus pesan sesi setelah ditampilkan
+    unset($_SESSION['success']);
 }
 
 include('templates/header.php');
@@ -57,9 +62,6 @@ include('templates/header.php');
                     <a role="button" class="password-show"><i class="fa-duotone fa-eye"></i></a>
                 </div>
                 <button class="btn btn-primary w-100 login-btn" type="submit">Register</button>
-                <div class="mt-3">Already have an account?
-                    <a href="/login">Login here</a>
-                </div>
             </form>
         </div>
     </div>
