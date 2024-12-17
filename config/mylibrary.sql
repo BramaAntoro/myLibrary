@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 04, 2024 at 10:14 PM
+-- Generation Time: Dec 17, 2024 at 04:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -31,25 +31,26 @@ CREATE TABLE `books` (
   `id` int(11) NOT NULL,
   `title` varchar(100) NOT NULL,
   `author` varchar(100) NOT NULL,
-  `year` int(11) NOT NULL
+  `year` int(11) NOT NULL,
+  `status` enum('borrowed','available') NOT NULL DEFAULT 'available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `books`
 --
 
-INSERT INTO `books` (`id`, `title`, `author`, `year`) VALUES
-(1, 'One Piece', 'Oda', 1997),
-(2, 'Laskar Pelangi', 'Andrea Hirata', 2005),
-(3, 'Bumi Manusia', 'Pramoedya Ananta Toer', 1980),
-(4, 'Perahu Kertas', 'Dee Lestari', 2009),
-(5, 'Sepatu Dahlan', 'Khrisna Pabichara', 2012),
-(6, 'Negeri 5 Menara', 'Ahmad Fuadi', 2009),
-(7, 'Supernova: Kesatria, Puteri, dan Bintang Jatuh', 'Dee Lestari', 2001),
-(8, 'Cantik Itu Luka', 'Eka Kurniawan', 2002),
-(9, 'Orang-Orang Biasa', 'Andrea Hirata', 2019),
-(10, 'Ronggeng Dukuh Paruk', 'Ahmad Tohari', 1982),
-(12, 'test', 'brama', 2000);
+INSERT INTO `books` (`id`, `title`, `author`, `year`, `status`) VALUES
+(1, 'One Piece', 'Oda', 1997, 'available'),
+(2, 'Laskar Pelangi', 'Andrea Hirata', 2005, 'available'),
+(3, 'Bumi Manusia', 'Pramoedya Ananta Toer', 1980, 'available'),
+(4, 'Perahu Kertas', 'Dee Lestari', 2009, 'available'),
+(5, 'Sepatu Dahlan', 'Khrisna Pabichara', 2012, 'available'),
+(6, 'Negeri 5 Menara', 'Ahmad Fuadi', 2009, 'available'),
+(7, 'Supernova: Kesatria, Puteri, dan Bintang Jatuh', 'Dee Lestari', 2001, 'available'),
+(8, 'Cantik Itu Luka', 'Eka Kurniawan', 2002, 'available'),
+(9, 'Orang-Orang Biasa', 'Andrea Hirata', 2019, 'available'),
+(10, 'Ronggeng Dukuh Paruk', 'Ahmad Tohari', 1982, 'available'),
+(12, 'test', 'brama', 2000, 'available');
 
 -- --------------------------------------------------------
 
@@ -186,7 +187,7 @@ ALTER TABLE `user_detail`
 -- AUTO_INCREMENT for table `borrow`
 --
 ALTER TABLE `borrow`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `detail`

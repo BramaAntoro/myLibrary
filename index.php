@@ -91,6 +91,10 @@ if (!isset($_SESSION['is_login']) && ($uri == '/membership' || $uri == '/book'))
     exit;
 }
 
+if ($uri == '/return-book' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once 'controllers/ReturnController.php';
+    return ReturnController::returnBook();
+}
 
 if ($uri == '/logout') {
     session_start();
